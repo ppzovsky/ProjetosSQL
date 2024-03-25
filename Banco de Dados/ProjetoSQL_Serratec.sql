@@ -1,6 +1,6 @@
 create database CampanhaBD;
 
-CREATE TABLE campanha(
+create table campanha(
 	nome varchar(50),
 	data_inicio date,
 	data_final date
@@ -18,8 +18,10 @@ create table quizzes(
     titulo varchar(50), 
     descricao varchar(200),
     data_inicio date,
-    prazo date
+    prazo timestamp 
 );
+
+alter table quizzes alter column prazo type date;
 
 create table participantes (
     ID serial primary key,
@@ -30,16 +32,19 @@ create table participantes (
     foreign key (quizID) references quizzes(quizID)
 );
 
-
-
 create table pergunta(
     perguntaID serial PRIMARY KEY,
     texto_pergunta varchar(100),
     texto_resposta varchar(100),
-    opcao char
-    
-    
+    opcao char  
 );
+
+alter table pergunta alter column texto_resposta type text;
+alter table pergunta alter column texto_pergunta type text;
+
+alter table pergunta
+add column quizID int default null,
+add constraint fk_quizID foreign key(quizID) references quizzes(quizId);
 
 create table resposta(
 	Resposta_id serial primary key,
@@ -165,10 +170,6 @@ insert into pergunta (texto_pergunta, texto_resposta, opcao) values
     'a'
 );
 
-alter table pergunta
-add column quizID int default null,
-add constraint fk_quizID foreign key(quizID) references quizzes(quizId);
-
 update pergunta
 set quizID = 1
 where perguntaID < 12;
@@ -235,20 +236,6 @@ insert into pergunta (texto_pergunta, texto_resposta, opcao, quizID) values
 	  2
 );
 
-
-ALTER TABLE quizzes 
-ALTER COLUMN prazo TYPE DATE;
-
-
-delete from quizzes  where quizID = 1;
-
-ALTER TABLE quizzes ALTER COLUMN prazo TYPE date;
-
-drop table pergunta; --recriamos a tabela pergunta
-
-alter table pergunta alter column texto_resposta type text;
-alter table pergunta alter column texto_pergunta type text;
-
 alter table campanha
 add column campanhaID serial primary key;
 
@@ -303,5 +290,3 @@ select * from funcionario;
 select * from pergunta;
 select * from quizzes;
 select * from resposta;
-
-delete from pergunta where perguntaid = 5;
