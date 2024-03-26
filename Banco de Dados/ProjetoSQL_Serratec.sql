@@ -284,9 +284,26 @@ insert into participantes (quizid, funcionarioid, acertos) values
 );
 
 
+
+
 select * from participantes;
 select * from campanha;
 select * from funcionario;
 select * from pergunta;
 select * from quizzes;
 select * from resposta;
+
+-- Consultar os funcionários que participaram de uma determinada campanha de quiz e sua pontuação.
+SELECT funcionario.nome, participantes.quizid, participantes.acertos
+FROM funcionario
+INNER JOIN participantes ON funcionario.funcionarioid  = participantes.funcionarioid;
+
+
+-- Consultar os funcionários que obtiveram a maior pontuação.
+SELECT funcionario.nome, participantes.acertos
+FROM funcionario
+INNER JOIN participantes ON funcionario.funcionarioid  = participantes.funcionarioid
+WHERE acertos = (
+    SELECT MAX(acertos)
+    FROM participantes
+);
